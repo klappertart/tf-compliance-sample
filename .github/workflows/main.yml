@@ -1,0 +1,44 @@
+---
+name: CI
+on: [push]
+
+jobs:
+  terraform-s3:
+    name: terraform-precheck-s3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      
+      - name: terraform plan
+        id: plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cd terraform/s3 && terraform init && terraform plan -out=plan.out && terraform show -json plan.out > plan.out.json
+      - name: terraform-compliance
+        uses: terraform-compliance/github_action@0.1.6
+        with:
+          plan: terraform/s3/plan.out.json
+          features: compliance/s3/
+
+  terraform-sec-group:
+    name: terraform-precheck-sec-group
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      
+      - name: terraform plan
+        id: plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cd terraform/sec-group && terraform init && terraform plan -out=plan.out && terraform show -json plan.out > plan.out.json
+      - name: terraform-compliance
+        uses: terraform-compliance/github_action@0.1.6
+        with:
+          plan: terraform/sec-group/plan.out.json
+          features: compliance/sec-group/
