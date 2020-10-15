@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  terraform:
+  terraform-compliance-s3:
     name: terraform-compliance-s3
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +23,7 @@ jobs:
           plan: terraform/s3/plan.out.json
           features: compliance/s3/
 
+  terraform-compliance-sg:       
     name: terraform-compliance-sg
     runs-on: ubuntu-latest
     steps:
