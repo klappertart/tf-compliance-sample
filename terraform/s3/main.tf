@@ -7,6 +7,6 @@ resource "aws_s3_bucket" "this" {
 
   tags = {
     Name        = "terraform"
-    Environment = "experiment"
+    Environment = "production"
   }
 }
