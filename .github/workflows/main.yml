@@ -29,9 +29,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DIR: terraform/sec-group
         run: |
-          cd $DIR && terraform init && terraform plan -out=plan.out && terraform show -json plan.out > plan.out.json
+          cd terraform/sec-group && terraform init && terraform plan -out=plan.out && terraform show -json plan.out > plan.out.json
       - name: terraform-compliance-sg
         uses: terraform-compliance/github_action@0.1.6
         with:
           plan: terraform/sec-group/plan.out.json
-          features: $DIR
+          features: compliance/sec-group/
