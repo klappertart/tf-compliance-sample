@@ -28,11 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: terraform-plan-sg
-        id: plan
+        id: plan-sg
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DIR: terraform/sec-group
         run: |
           cd terraform/sec-group && terraform init && terraform plan -out=plan.out && terraform show -json plan.out > plan.out.json
       - name: terraform-compliance-sg
@@ -40,4 +39,3 @@ jobs:
         with:
           plan: terraform/sec-group/plan.out.json
           features: compliance/sec-group/
-        continue-on-error: true
