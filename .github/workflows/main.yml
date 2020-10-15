@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   terraform:
-    name: terraform-precheck
+    name: terraform-compliance
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,6 +22,7 @@ jobs:
         with:
           plan: terraform/s3/plan.out.json
           features: compliance/s3/
+        continue-on-error: true
       - name: terraform-plan-sg
         id: plan
         env:
@@ -35,3 +36,4 @@ jobs:
         with:
           plan: terraform/sec-group/plan.out.json
           features: compliance/sec-group/
+        continue-on-error: true
